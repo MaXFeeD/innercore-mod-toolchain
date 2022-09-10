@@ -63,6 +63,8 @@ To run your first build, run (*Ctrl+Shift+B*) **Build and Push Everything** task
 
 Thanks to *projects.json* you can use toolchain for any number of projects. File contains information about location of projects that can be loaded. Value `current` determines which particular folder should be selected right now, each project should be added to the `projects` object.
 
+Try [toolchain.code-workspace](toolchain.code-workspace) right now!
+
 ## make.json
 
 *make.json* is the main configuration file of the project. In this file you can specify everything you need to build a mod for Inner Core. Most of the work, such as scripts generation and *build.config* creation is done under the hood.

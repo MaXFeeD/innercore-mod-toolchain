@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"name": "toolchain",
+			"path": "toolchain-mod"
+		},
+		{
+			"name": "test",
+			"path": "toolchain-mod/mods/test"
+		}
+	],
+	"settings": {
+		"window.title": "${dirty}${activeEditorMedium}${separator}Inner Core Mod Toolchain",
+		"window.titleSeparator": " — ",
+		"search.useParentIgnoreFiles": true,
+		"java.dependency.packagePresentation": "flat",
+		"java.dependency.syncWithFolderExplorer": true,
+		"java.project.referencedLibraries": [
+			"../../toolchain/classpath/android.jar",
+			"../../toolchain/classpath/android-support-multidex.jar",
+			"../../toolchain/classpath/android-support-v4.jar",
+			"../../toolchain/classpath/android-support-v7-recyclerview.jar",
+			"../../toolchain/classpath/horizon-classes.jar"
+		]
+	}
+}
