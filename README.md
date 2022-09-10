@@ -59,6 +59,10 @@ To install Android NDK of any version on you computer, you should first download
 
 To run your first build, run (*Ctrl+Shift+B*) **Build and Push Everything** task. This task performs the required setup and builds the whole project. If your project contains native code, local NDK installation will be created. This can take some time.
 
+## projects.json
+
+Thanks to *projects.json* you can use toolchain for any number of projects. File contains information about location of projects that can be loaded. Value `current` determines which particular folder should be selected right now, each project should be added to the `projects` object.
+
 ## make.json
 
 *make.json* is the main configuration file of the project. In this file you can specify everything you need to build a mod for Inner Core. Most of the work, such as scripts generation and *build.config* creation is done under the hood.
@@ -101,32 +105,32 @@ Unpack *java.zip* archive to the root of mod source. You will get the following 
 
 ```
 .
-└─ src
-   ├─...
-   └─ java
-   │  └─ sample
-   │     ├─ lib
-   │     ├─ src
-   │     │  └─ com
-   │     │     └─ sample_mod
-   │     │        └─ sample_package
-   │     │           └─ Boot.java
-   │     └─ manifest
-   └─ .classpath
+└─ mods
+   └─ test
+      ├─...
+      └─ java
+      │  └─ sample
+      │     ├─ lib
+      │     ├─ src
+      │     │  └─ com
+      │     │     └─ sample_mod
+      │     │        └─ main
+      │     │           └─ Boot.java
+      │     └─ manifest
+      └─ .classpath
 ```
 
-In the example above, a sample java module is already created. To add a new one, create a directory in *java* folder and add it to 
-*.classpath* file as a new entry:
+In the example above, a sample java module is already created. To add a new one, create a directory in *java* folder and add it to *.classpath* file in project folder as a new entry:
 
 ```xml
-<classpathentry kind="src" path="src/java/module_name/src"/>
+<classpathentry kind="src" path="java/module_name/src"/>
 ```
 
 To add *.jar* libraries to classpath and to the compiler, move your library file
 to the *libs* directory and add a new entry to the *.classpath* file:
 
 ```xml
-<classpathentry kind="lib" path="src/java/sample/lib/lib_name.jar"/>
+<classpathentry kind="lib" path="java/sample/lib/lib_name.jar"/>
 ```
 
 ## Working with Android Debug Bridge
