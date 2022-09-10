@@ -1,4 +1,4 @@
-// This is a sample source for mod, that uses sample native module, that is created in src/native/sample
+// This is a sample source for mod, that uses sample native module, that is created in native/sample
 
 alert("Sample mod loaded!");
 

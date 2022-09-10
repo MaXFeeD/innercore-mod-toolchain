@@ -5,7 +5,7 @@
 			"description": "This is sample description",
 			"author": "Unknown",
 			"version": "1.0",
-			"icon": "src/icon.png"
+			"icon": "icon.png"
 		},
 		"api": "CoreEngine"
 	},
@@ -26,58 +26,58 @@
 	},
 	"resources": [
 		{
-			"path": "src/assets/res",
+			"path": "assets/res",
 			"type": "resource_directory"
 		},
 		{
-			"path": "src/assets/gui",
+			"path": "assets/gui",
 			"type": "gui"
 		},
 		{
-			"path": "src/assets/resource_packs/*",
+			"path": "assets/resource_packs/*",
 			"type": "minecraft_resource_pack"
 		},
 		{
-			"path": "src/assets/behavior_packs/*",
+			"path": "assets/behavior_packs/*",
 			"type": "minecraft_behavior_pack"
 		}
 	],
 	"sources": [
 		{
-			"source": "src/dev",
+			"source": "dev",
 			"target": "main.js",
 			"type": "main",
 			"language": "typescript"
 		},
 		{
-			"source": "src/launcher.js",
+			"source": "launcher.js",
 			"type": "launcher",
 			"language": "javascript"
 		},
 		{
-			"source": "src/lib/*",
+			"source": "lib/*",
 			"type": "library",
 			"language": "javascript"
 		},
 		{
-			"source": "src/preloader/*",
+			"source": "preloader/*",
 			"type": "preloader",
 			"language": "javascript"
 		}
 	],
 	"compile": [
 		{
-			"source": "src/native/*",
+			"source": "native/*",
 			"type": "native"
 		},
 		{
-			"source": "src/java/*",
+			"source": "java/*",
 			"type": "java"
 		}
 	],
 	"additional": [
 		{
-			"source": "src/assets/root/*",
+			"source": "assets/root/*",
 			"targetDir": "."
 		}
 	]

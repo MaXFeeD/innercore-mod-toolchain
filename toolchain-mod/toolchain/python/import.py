@@ -18,11 +18,12 @@ def import_mod_info(make_file, directory):
 	root_files.append("mod.info")
 
 	mod_info = os.path.join(directory, "mod.info")
+	if not exists(mod_info):
+		make_file["global"]["info"] = {}
+		return
 	with open(mod_info, "r", encoding="utf-8") as info_file:
 		info_obj = json.loads(info_file.read())
 		make_file["global"]["info"] = info_obj
-		return
-	make_file["global"]["info"] = {}
 
 def import_build_config(make_file, source, destination):
 	global root_files
@@ -36,21 +37,19 @@ def import_build_config(make_file, source, destination):
 		config = BaseConfig(config_obj)
 		make_file["global"]["api"] = config.get_value("defaultConfig.api", "CoreEngine")
 
-		src_dir = os.path.join(destination, "src")
-		
 		# clear assets folder
-		assets_dir = os.path.join(src_dir, "assets")
+		assets_dir = os.path.join(destination, "assets")
 		clear_directory(assets_dir)
 		os.makedirs(assets_dir)
 
 		# some pre-defined resource folders
 		resources = [
 			{
-				"path": "src/assets/resource_packs/*",
+				"path": "assets/resource_packs/*",
 				"type": "minecraft_resource_pack"
 			},
 			{
-				"path": "src/assets/behavior_packs/*",
+				"path": "assets/behavior_packs/*",
 				"type": "minecraft_behavior_pack"
 			}
 		]
@@ -67,7 +66,7 @@ def import_build_config(make_file, source, destination):
 			path = os.path.join(*path_parts)
 			copy_directory(os.path.join(source, path), os.path.join(assets_dir, path), True)
 			resources.append({
-				"path": "src/assets/" + path_stripped,
+				"path": "assets/" + path_stripped,
 				"type": res_dir["resourceType"]
 			})
 
@@ -76,9 +75,9 @@ def import_build_config(make_file, source, destination):
 		make_file["resources"] = resources
 
 		# clear libraries folder and copy libraries from the old project
-		libs_dir = os.path.join(destination, "src", "lib")
+		libs_dir = os.path.join(destination, "lib")
 		clear_directory(libs_dir)
-		clear_directory(os.path.join(destination, "src", "dev"))
+		clear_directory(os.path.join(destination, "dev"))
 		os.makedirs(libs_dir)
 		old_libs = config.get_value("defaultConfig.libraryDir", "lib").strip('/')
 		old_libs_parts = old_libs.split('/')
@@ -91,18 +90,18 @@ def import_build_config(make_file, source, destination):
 		# some pre-defined source folders
 		sources = [
 			{
-				"source": "src/lib/*",
+				"source": "lib/*",
 				"type": "library",
 				"language": "javascript"
 			},
 			{
-				"source": "src/preloader/*",
+				"source": "preloader/*",
 				"type": "preloader",
 				"language": "javascript"
 			}
 		]
 
-		ensure_directory(os.path.join(src_dir, "preloader"))
+		ensure_directory(os.path.join(destination, "preloader"))
 
 		# import sources
 		for source_dir in config.get_filtered_list("compile", "sourceType", ("mod", "launcher")):
@@ -121,15 +120,15 @@ def import_build_config(make_file, source, destination):
 			if len(build_dirs) > 0:
 				old_build_path = build_dirs[0]["dir"].strip("/")
 				old_path_parts = old_build_path.split('/')
-				sourceObj["source"] = "src/" + old_build_path
+				sourceObj["source"] = old_build_path
 				sourceObj["target"] = source_dir["path"]
 				root_files.append(old_path_parts[0])
 
-				copy_directory(os.path.join(source, *old_path_parts), os.path.join(src_dir, *old_path_parts), True)
+				copy_directory(os.path.join(source, *old_path_parts), os.path.join(destination, *old_path_parts), True)
 				 
 			else:
-				sourceObj["source"] = "src/" + source_dir["path"]
-				copy_file(os.path.join(source, *source_parts), os.path.join(src_dir, *source_parts))
+				sourceObj["source"] = source_dir["path"]
+				copy_file(os.path.join(source, *source_parts), os.path.join(destination, *source_parts))
 
 			sources.append(sourceObj)
 
@@ -144,7 +143,7 @@ def copy_additionals(source, destination):
 		if f in root_files:
 			continue
 		src = os.path.join(source, f)
-		dest = os.path.join(destination, "src", "assets", "root")
+		dest = os.path.join(destination, "assets", "root")
 
 		if os.path.isfile(src):
 			copy_file(src, os.path.join(dest, f))
@@ -152,9 +151,7 @@ def copy_additionals(source, destination):
 			copy_file(src, os.path.join(dest, f))
 
 def init_java_and_native(make_file, directory):
-	src_dir = os.path.join(directory, "src")
-
-	sample_native_module = os.path.join(src_dir, "native", "sample")
+	sample_native_module = os.path.join(directory, "native", "sample")
 	if not os.path.exists(sample_native_module):
 		print("native sample module is unavailable")
 
@@ -164,12 +161,12 @@ def init_java_and_native(make_file, directory):
 			module_name = input("Enter the new native module name [sample]: ")
 			if module_name != "":
 				os.rename(sample_native_module,
-					os.path.join(src_dir, "native", module_name))
+					os.path.join(directory, "native", module_name))
 		else:
 			if os.path.isdir(sample_native_module):
 				clear_directory(sample_native_module)
 
-	sample_java_archive = os.path.join(src_dir, "java.zip")
+	sample_java_archive = os.path.join(directory, "java.zip")
 	if not os.path.exists(sample_java_archive):
 		print("java sample module is unavailable")
 	else: 
@@ -180,10 +177,10 @@ def init_java_and_native(make_file, directory):
 				module_name = "sample"
 
 			with zipfile.ZipFile(sample_java_archive, 'r') as zip_ref:
-				zip_ref.extractall(os.path.join(src_dir))
+				zip_ref.extractall(os.path.join(directory))
 
-			os.rename(os.path.join(src_dir, "java", "sample"),
-				os.path.join(src_dir, "java", module_name))
+			os.rename(os.path.join(directory, "java", "sample"),
+				os.path.join(directory, "java", module_name))
 
 			# write info to .classpath
 			import xml.etree.ElementTree as etree
@@ -191,7 +188,7 @@ def init_java_and_native(make_file, directory):
 			tree = etree.parse(classpath)
 			for classpathentry in tree.getroot():
 				if classpathentry.attrib["kind"] == "src":
-					classpathentry.attrib["path"] = "src/java/" + module_name + "/src"
+					classpathentry.attrib["path"] = "java/" + module_name + "/src"
 
 			tree.write(classpath, encoding="utf-8", xml_declaration=True)
 			
