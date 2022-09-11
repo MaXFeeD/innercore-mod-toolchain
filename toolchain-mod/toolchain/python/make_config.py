@@ -21,7 +21,7 @@ class MakeConfig(BaseConfig):
 		return self.mod_dir_name
 
 	def get_path(self, relative_path, from_mod=None):
-		if(from_mod):
+		if from_mod:
 			return os.path.abspath(os.path.join(self.mod_dir, relative_path))
 		else:
 			return os.path.abspath(os.path.join(self.root_dir, relative_path))

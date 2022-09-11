@@ -186,7 +186,7 @@ def task_build_package():
 	import shutil
 	config = get_make_config()
 	output_dir = config.get_path(os.path.join("output", config.get_mod_dir()))
-	output_file = config.get_path("mod.icmod")
+	output_file = config.get_path("release.icmod", True)
 	output_file_tmp = config.get_path("toolchain/build/mod.zip")
 	ensure_directory(output_dir)
 	ensure_file_dir(output_file_tmp)
