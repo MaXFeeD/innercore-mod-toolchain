@@ -194,7 +194,7 @@ def compile_all_using_make_config():
 			print(f"failed, clearing compiled directories {directories} ...")
 			for directory_name in directory_names:
 				clear_directory(make_config.get_path(os.path.join("output", make_config.get_mod_dir(), directory_name)))
-	print(directories)
+
 	cleanup_gradle_scripts(directories)
 	mod_structure.update_build_config_list("javaDirs")
 

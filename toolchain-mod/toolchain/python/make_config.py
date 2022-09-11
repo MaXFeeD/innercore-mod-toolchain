@@ -46,6 +46,7 @@ class MakeConfig(BaseConfig):
 				paths.append(path)
 		return paths
 
+
 projects_config = None
 root_config = None
 make_config = None
@@ -70,7 +71,7 @@ if projects_config is not None:
 	project_make = project_info["make_config"]
 
 	for i in range(0, 4):
-		make_file = os.path.join("../" * i, project_folder+"/"+project_make)
+		make_file = os.path.join("../" * i, project_folder, project_make)
 		if os.path.isfile(make_file):
 			make_config = MakeConfig(make_file, root_config, project_name)
 
